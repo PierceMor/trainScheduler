@@ -70,7 +70,12 @@ database.ref().on("child_added", function(childSnapshot, prevChildKey){
     console.log(trainFirst);
     console.log(trainFrequency);
 
+    // I need to make the trains time
 
+
+    // Throwing that Schedule up on that Scheduler thing
+    $("#thatDamnTable > tbody").append("<tr><td>" + trainName + "</td><td>" + trainDestination + "</td><td>" + trainFirst + "</td></tr>" );
+    
 // End  of firebase event
 });
 
