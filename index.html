@@ -14,6 +14,7 @@
             <h1>
                 Train Time, baby.
             </h1>
+            <div id="currentTime"></div>
         </div>
 
     <!-- train  schedule goes here --> 
@@ -31,14 +32,8 @@
                     </thead>
 
             <!-- Where the data will be implimented into -->
-                    <tbody id="dataAcceptor" >
-                      <tr>
-                        <td id="inputName" ></td>
-                        <td id="inputDestination"></td>
-                        <td id="inputFirst"></td>
-                        <td id="inputFrequency"></td>
-                        <td id="inputNext"></td>
-                      </tr>
+                    <tbody>
+                      
                     </tbody>
                 </table>
             </div>
@@ -58,7 +53,7 @@
                         <input type="text" id="trainDestination" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
                     </div>
 
-                <p>First Train Time</p>
+                <p>First Train Time (00:00) </p>
                     <div class="input-group mb-3">
                         <input type="text" id="trainFirst" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
                     </div>
@@ -77,5 +72,5 @@
 <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
 
 <script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
-<script src="assets/javascript.js"></script>
+<script src="assets/javascript1.js"></script>
 </html>

@@ -9,7 +9,7 @@ var config = {
   };
   firebase.initializeApp(config);
 
-var database = firebase.database();
+var database= firebase.database();
 
 
 $(document).ready(function(){
@@ -23,9 +23,10 @@ $(document).on("click", "button", function(event){
     // Gathers Data 
     var trainName = $("#trainName").val().trim();
     var trainDestination = $("#trainDestination").val().trim();    
-    var trainFirst = moment($("#trainFirst").val().trim()).format("HH:mm");
-    var trainFrequency = moment($("#trainFrequency").val().trim()).format("HHs:mm");
+    var trainFirst = $("#trainFirst").val().trim();
+    var trainFrequency = $("#trainFrequency").val().trim();
 
+  
 
     // Creates local "temporary" object for holding data
     var newTrain = {
@@ -35,14 +36,14 @@ $(document).on("click", "button", function(event){
         frequency: trainFrequency,
     };
 
-    //uploads train Data to the Database
+    //uploads employee Data to the Database
     database.ref().push(newTrain);
 
-    console.log(newTrain);
-    //console.log(newTrain.name);
-    //console.log(newTrain.destination);
-    //console.log(newTrain.trainFirst);
-    //console.log(newTrain.frequency);
+
+    console.log(newTrain.name);
+    console.log(newTrain.destination);
+    console.log(newTrain.first);
+    console.log(newTrain.frequency);
 
     // Alert
     //alert("This stuff working");
@@ -59,35 +60,43 @@ $("#trainFrequency").val("");
 database.ref().on("child_added", function(childSnapshot, prevChildKey){
     console.log(childSnapshot.val()); 
 
+    // Name of the Train
     var trainName = childSnapshot.val().name;
-    var trainDestination = childSnapshot.val().destination;
-    var trainFirst = moment(childSnapshot.val().frequency).format("HH:mm");
-    var trainFrequency = moment(childSnapshot.val().first).format("HH:mm") ;
-
-
-    console.log(trainFirst);
-    console.log(trainFrequency);
-    //childSnapshot.val().first
-    //childSnapshot.val().frequency
-
-    //current time 
-    var currentTime = moment();
-
     
+    // Destination of the Train
+    var trainDestination = childSnapshot.val().destination;
 
-    var tRemainder = 
+    // When the Train starts running
+    var trainFirst = childSnapshot.val().first;
 
-    // Info 
-    //console.log(trainName);
-   // console.log(trainDestination);
-   // console.log(trainFirst);
-   // console.log(trainFrequency);
+    // How often the train shows up
+    var trainFrequency = childSnapshot.val().frequency;
+
+    // gives current time 
+    var currentTime = moment().format("HH:mm");
+
+    //attaches current time to the Header
+    $("#currentTime").text("Current time " + currentTime);
+
+ 
 
     // I need to make the trains time
+    var diffTime = moment(trainFirst, "HH:mm");
+    console.log(diffTime);
+
+    // Time apart (remainder)
+    var tRemained = diffTime % trainFrequency;
 
 
-    // Throwing that data up on that Scheduler thing
-    $("#thatDamnTable > tbody").append("<tr><td>" + trainName + "</td><td>" + trainDestination + "</td><td>" + trainFirst + "</td></tr>" );
+    // minutes until train
+    var tMinutesTillTrain = trainFrequency - tRemained;
+console.log(tMinutesTillTrain);
+    // 
+    var nextTrain = moment().add(tMinutesTillTrain, "minutes" ).format( "HH:mm");
+
+
+    // Throwing that Schedule up on that Scheduler thing
+    $("#thatDamnTable > tbody").append("<tr><td>" + trainName + "</td><td>" + trainDestination + "</td><td>" + trainFrequency + "</td><td>" + nextTrain + "</td><td>" + tMinutesTillTrain + "</td><td>" );
     
 // End  of firebase event
 });
