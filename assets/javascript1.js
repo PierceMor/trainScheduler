@@ -15,6 +15,9 @@ var database= firebase.database();
 $(document).ready(function(){
 
 
+// gives current time 
+var currentTime = moment().format("HH:mm");
+
 
 // button for adding trains 
 $(document).on("click", "button", function(event){
@@ -72,31 +75,35 @@ database.ref().on("child_added", function(childSnapshot, prevChildKey){
     // How often the train shows up
     var trainFrequency = childSnapshot.val().frequency;
 
-    // gives current time 
-    var currentTime = moment().format("HH:mm");
+
 
     //attaches current time to the Header
     $("#currentTime").text("Current time " + currentTime);
 
- 
+    var trainFrequencies = moment(trainFrequency, "minutes").format( "HH:mm");
 
     // I need to make the trains time
-    var diffTime = moment(trainFirst, "HH:mm");
-    console.log(diffTime);
+    var diffTime = moment(trainFirst, "minutes").format("HH:mm");
+    
 
     // Time apart (remainder)
-    var tRemained = diffTime % trainFrequency;
+    var tRemained = trainFrequency % diffTime;
 
+    console.log(diffTime);
+    console.log(trainFrequencies);
+    console.log(tRemained);
+
+    //currently tremained is only coming up as 0
 
     // minutes until train
     var tMinutesTillTrain = trainFrequency - tRemained;
-console.log(tMinutesTillTrain);
-    // 
+    //console.log(tMinutesTillTrain);
+    
     var nextTrain = moment().add(tMinutesTillTrain, "minutes" ).format( "HH:mm");
 
 
     // Throwing that Schedule up on that Scheduler thing
-    $("#thatDamnTable > tbody").append("<tr><td>" + trainName + "</td><td>" + trainDestination + "</td><td>" + trainFrequency + "</td><td>" + nextTrain + "</td><td>" + tMinutesTillTrain + "</td><td>" );
+    $("#thatDamnTable > tbody").append("<tr><td>" + trainName + "</td><td>" + trainDestination + "</td><td>" + trainFrequencies + "</td><td>" + nextTrain + "</td><td>" + tMinutesTillTrain + "</td><td>" );
     
 // End  of firebase event
 });
